@@ -1,0 +1,225 @@
+
+{% load static %}
+
+
+<!DOCTYPE html>
+<!-- Coding By CodingNepal - codingnepalweb.com -->
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <title>{{employee.Emp_name}} profile</title>
+</head>
+
+<body>
+    <nav>
+        <div class="logo-name">
+            <div class="logo-image">
+                <img src="{% static 'img/logo.png' %}" alt="">
+            </div>
+
+            <span class="logo_name">Inductus</span>
+        </div>
+
+        <div class="menu-items">
+            <ul class="nav-links">
+                <li><a href="{% url 'employees' %}">
+                    <i class="uil uil-bookmark"></i>
+                    <span class="link-name">Employees</span>
+                </a></li>
+
+                <li><a href="" target="_self">
+                        <i class="uil uil-files-landscapes"></i>
+                        <span class="link-name">Profile</span>
+                    </a></li>
+                    <li><a href="{% url 'atp' employee.uuid %}">
+                        <i class="uil uil-plane"></i>
+                        <span class="link-name">Advanced Travel Plan</span>
+                    </a></li>
+                    <li><a href="{%  url 'tp' employee.uuid %}">
+                        <i class="uil uil-plane-fly"></i>
+                        <span class="link-name">Actual Travel Plan</span>
+                    </a></li>
+            </ul>
+
+            <ul class="logout-mode">
+                <li><a href="{% url 'logout' %}">
+                        <i class="uil uil-signout"></i>
+                        <span class="link-name">Logout</span>
+                    </a></li>
+
+                <li class="mode">
+                    <a href="#">
+                        <i class="uil uil-moon"></i>
+                        <span class="link-name">Dark Mode</span>
+                    </a>
+
+                    <div class="mode-toggle">
+                        <span class="switch"></span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="dashboard">
+        <div class="top">
+            <i class="uil uil-bars sidebar-toggle"></i>
+
+
+        </div>
+
+        <div class="dash-content">
+            <div class="overview">
+                <div class="activity">
+                    <div class="title">
+                        <i class="uil uil-tachometer-fast-alt"></i>
+                        <span class="text">{{employee.Emp_name}}</span>
+                    </div>
+                    
+
+                    <div class="boxes">
+                        <div class="box box1">
+                            <i class="uil uil-money-bill"></i>
+                            <span class="text">Travel Allocated Budget </span>
+                            {% if travel_budget == 0  %}
+                            <span class="number">0</span>
+                            {% else %}
+                            <span class="number">{{travel_budget.allocated_budget}}</span>
+                            {% endif %}
+                        </div>
+                        <div class="box box2">
+                            <i class="uil uil-money-bill"></i>
+                            <span class="text">Flight Allocated Budget</span>
+                            {% if flight_budget == 0  %}
+                            <span class="number">0</span>
+
+                            {% else %}
+                            <span class="number">{{flight_budget.allocated_budget}}</span>
+
+                            {% endif %}
+
+                        </div>
+                        <div class="box box3">
+                            <i class="uil uil-money-bill"></i>
+                            <span class="text">OPE Allocated Budget</span>
+                            {% if ope_budget == 0  %}
+                            <span class="number">0</span>
+
+                            {% else %}
+                            <span class="number">{{ope_budget.allocated_budget}}</span>
+                            {% endif %}
+
+
+                           
+                        </div>
+                    </div>
+
+<br>
+
+
+
+                    <div class="boxes">
+                        {% if travel_budget.remaining_budget <= remaining_budget_travel %}
+                        <div class="box box1" style="background-color: red;">
+                            <i class="uil uil-money-bill"></i>
+                            <span class="text">Travel Remaining Budget </span>
+                            {% if travel_budget == 0  %}
+                            <span class="number">0</span>
+                            {% else %}
+                                
+                            <span class="number">{{travel_budget.remaining_budget}}</span>
+                            {% endif %}
+                        </div>
+                        {% else %}
+                        <div class="box box1">
+                            <i class="uil uil-money-bill"></i>
+                            <span class="text">Travel Remaining Budget </span>
+                            {% if travel_budget == 0  %}
+                            <span class="number">0</span>
+                            {% else %}
+                                
+                            <span class="number">{{travel_budget.remaining_budget}}</span>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+
+                        {% if flight_budget.remaining_budget <= remaining_budget_flight %}
+                        <div class="box box2" style="background-color: red;">
+                            <i class="uil uil-money-bill"></i>
+                            <span class="text">Flight Remaining Budget </span>
+                            {% if flight_budget == 0  %}
+                            <span class="number">0</span>
+                            {% else %}
+                                
+                            <span class="number">{{flight_budget.remaining_budget}}</span>
+                            {% endif %}
+                        </div>
+                        {% else %}
+                        <div class="box box2" ">
+                            <i class="uil uil-money-bill"></i>
+                            <span class="text">Flight Remaining Budget </span>
+                            {% if flight_budget == 0  %}
+                            <span class="number">0</span>
+                            {% else %}
+                                
+                            <span class="number">{{flight_budget.remaining_budget}}</span>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                        
+
+                        {% if ope_budget.remaining_budget <= remaining_budget_ope %}
+                        <div class="box box3">
+                            <i class="uil uil-money-bill"></i>
+                            <span class="text">OPE Remaining Budget </span>
+                            {% if ope_budget == 0  %}
+                            <span class="number">0</span>
+                            {% else %}
+                                
+                            <span class="number">{{ope_budget.remaining_budget}}</span>
+                            {% endif %}
+                        </div>
+                        {% else %}
+                        <div class="box box3">
+                            <i class="uil uil-money-bill"></i>
+                            <span class="text">OPE Remaining Budget </span>
+                            {% if ope_budget == 0  %}
+                            <span class="number">0</span>
+                            {% else %}
+                                
+                            <span class="number">{{ope_budget.remaining_budget}}</span>
+                            {% endif %}
+                        </div>
+
+                       {% endif %}
+
+                        
+                        
+
+                        
+                        
+
+                           
+                        </div>
+                    </div>
+                    </div>
+                    
+                    
+                    </div>
+                
+            </div>
+    </section>
+
+    <script src="{% static 'script.js' %}"></script>
+</body>
+
+</html>
+
+

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Excel Data Upload</title>
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .alert {
+            color: red;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .table-wrapper {
+            
+            overflow: auto; /* add both horizontal and vertical scrollbars */
+            width: 105%; /* set full width */
+            max-height: 500px; /* set maximum height */
+        }
+
+        /* styles.css */
+
+        .container1 {
+            max-width: 400px;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow-y: auto; /* add this line */
+            max-height: 200px; /* add this line */
+          }
+          
+          .alert-container {
+            background-color: #ffe6e6; /* light red background */
+            border-color: #ff0000; /* red border */
+          }
+          
+          .alert-container h2 {
+            color: #ff0000; /* red text */
+          }
+          
+          .alert-container ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+          }
+          
+          .alert-container li {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+          }
+          
+          .alert-container li:last-child {
+            border-bottom: none;
+          }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!--<h1 class="mb-4">Upload Excel File</h1>-->
+        <form method="post" enctype="multipart/form-data" class="mb-4">
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="file" name="excel_file" class="form-control-file" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </form>
+
+        <!--<h2>Uploaded Data</h2>-->
+        {% if excel_data %}
+            {% for sheet in excel_data %}
+                <!--<h3 class="mt-4">Sheet: {{ sheet.sheet_name }}</h3>-->
+                <div class="table-wrapper">
+                    <table class="table table-striped table-bordered">
+                        <thead class="thead-dark">
+                            <tr>
+                                {% for header in sheet.headers %}
+                                    <th>{{ header }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in sheet.data %}
+                                <tr>
+                                    {% for cell in row %}
+                                        <td>{{ cell }}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+               <!-- <h2>Keyword Locations for "Travel Budget"</h2>
+                {% if keyword_locations %}
+                    <ul>
+                        {% for row, col, value in keyword_locations %}
+                            <td>{{row}}</td>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>Keyword "{{ keyword }}" not found in the uploaded Excel file.</p>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <p>No data to display</p> -->
+        {% endif %}
+
+
+       <!-- <div>
+            <h2>Subtracted Values</h2>
+            {% if subtracted_values %}
+                <div class="table-wrapper">
+                    <table class="table table-striped table-bordered">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Subtracted Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for value in subtracted_values %}
+                                <tr>
+                                    <td>{{ value }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <p>No values to display</p>
+            {% endif %}
+        </div> -->
+
+        <p><b>ALERT: Based on P.F. Monthly & P.F. Budget Utlised</b></p>
+        <div class="container1 alert-container">
+            <ul>
+              {% for alert in alert_messages %}
+                <li style="color:red">{{ alert }}</li>
+              {% endfor %}
+            </ul>
+        </div>
+
+        <p><b>ALERT: Based on Travel Budget & Travel Budget Utlised</b></p>
+        <div class="container1 alert-container">
+            <ul>
+              {% for alert in travel_alerts %}
+                <li style="color:red">{{ travel_alerts }}</li>
+              {% endfor %}
+            </ul>
+        </div>
+
+
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

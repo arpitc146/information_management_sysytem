@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block start %}
+<div class="container mt-5">
+    <div class="emp-title mb-4">
+        <div class="title-wrapper">
+            <i class="bi bi-bookmark"></i> <!-- Bootstrap icon class -->
+            <span class="text">Consultant</span>
+        </div>
+        <form id="search-form" method="get" action="/search" class="search-box form-inline">
+            <input name="search_query" type="text" value="{{ search_query }}" class="form-control mr-sm-2" placeholder="Search Consultant...">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">S.no</th>
+                    <th scope="col">Consultant Name</th>
+                    <th scope="col">Consultant Code</th>
+                    <th scope="col">State</th>
+                    <th scope="col">Section</th>
+                    <th scope="col">Designation</th>
+                    <th scope="col">Start</th>
+                    <th scope="col">End</th>
+                    <th scope="col">P.F. Monthly</th>
+                    <th scope="col">P.F. Budget</th>
+                    <th scope="col">Travel Budget</th>
+                    <th scope="col">Travel Days Budget</th>
+                    <th scope="col">DSA Budget</th>
+                    <th scope="col">DSA Days Budget</th>
+                    <th scope="col">Terminal Charges Budget</th>
+                    <th scope="col">Flight Budget</th>
+                    <th scope="col">P.F. Budget Utilised</th>
+                    <th scope="col">Travel Budget Utlised</th>
+                    <th scope="col">Travel Days Budget Utlised</th>
+                    <th scope="col">DSA Budget Utlised</th>
+                    <th scope="col">DSA Days Budget Utlised</th>
+                    <th scope="col">Terminal Charges Budget Utlised</th>
+                    <th scope="col">Flight Budget Utlised</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for employee in employ %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td><a href="{% url 'employee' employee.uuid %}" class="text-decoration-none">{{ employee.Emp_name }}</a></td>
+                    <td>{{ employee.contract_no }}</td>
+                    <td>{{ employee.state }}</td>
+                    <td>{{ employee.programme }}</td>
+                    <td>{{ employee.designation }}</td>
+                    <td>{{ employee.contract_start_date }}</td>
+                    <td>{{ employee.contract_end_date }}</td>
+                    <td>{{ employee.profFee_monthly }}</td>
+                    <td>{{ employee.P_F_Budget }}</td>
+                    <td>{{ employee.Travel_Budget }}</td>
+                    <td>{{ employee.Travel_Days_Budget }}</td>
+                    <td>{{ employee.DSA_Budget }}</td>
+                    <td>{{ employee.DSA_Days_Budget }}</td>
+                    <td>{{ employee.Terminal_Charges_Budget }}</td>
+                    <td>{{ employee.Flight_Budget }}</td>
+                    <td>{{ employee.P_F_Budget_Utilised }}</td>
+                    <td>{{ employee.Travel_Budget_Utilised }}</td>
+                    <td>{{ employee.Travel_Days_Budget_Utlised }}</td>
+                    <td>{{ employee.DSA_Budget_Utlised }}</td>
+                    <td>{{ employee.DSA_Days_Budget_Utlised }}</td>
+                    <td>{{ employee.Terminal_Charges_Budget_Utlised }}</td>
+                    <td>{{ employee.Flight_Budget_Utlised }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const searchForm = document.getElementById("search-form");
+        const searchQueryInput = searchForm.querySelector("input[name='search_query']");
+        
+        // Auto-submit form if search query is empty and there are no employees to display
+        if (!searchQueryInput.value && !{{ employ|length }}) {
+            searchForm.submit();
+        }
+    });
+    </script>
+</div>
+{% endblock %}

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Excel Data Upload</title>
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #d3dee7; /* Light blue background */
+        }
+        .alert {
+            color: red;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .table-wrapper {
+            overflow: auto;
+            max-width: 100%;
+            max-height: 500px;
+        }
+        .alert-container {
+            background-color: #ffe6e6;
+            border-color: #ff0000;
+            margin-top: 20px;
+        }
+        .alert-container h2 {
+            color: #ff0000;
+        }
+        .alert-container ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .alert-container li {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+        .alert-container li:last-child {
+            border-bottom: none;
+        }
+        .custom-card {
+            margin-bottom: 20px;
+        }
+
+        .alert-container {
+            background-color: #ffe6e6;
+            border-color: #ff0000;
+            margin-top: 20px;
+            max-height: 200px; /* Set a maximum height for scrollable area */
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <!-- Upload Section -->
+            <div class="col-md-12">
+                <h1 class="mb-4">Upload Consultant File</h1>
+                <form method="post" enctype="multipart/form-data" class="mb-4">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input type="file" name="excel_file" class="form-control-file" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </form>
+                <!-- Search Form -->
+                <!--<form method="get">
+                    <label for="value">Search value:</label>
+                    <input type="text" id="value" name="value" class="form-control mb-3">
+                    <button type="submit" class="btn btn-secondary">Search</button>
+                </form>-->
+            </div>
+        <div class="row">
+            <!-- Display Uploaded Data -->
+            <div class="col-md-6 flex-center">
+                {% if excel_data %}
+                    {% for sheet in excel_data %}
+                        <div class="table-wrapper mb-4">
+                            <!--<h3 class="mt-4">Sheet: {{ sheet.sheet_name }}</h3>-->
+                            <table class="table table-striped table-bordered">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        {% for header in sheet.headers %}
+                                            <th>{{ header }}</th>
+                                        {% endfor %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for row in sheet.data %}
+                                        <tr>
+                                            {% for cell in row %}
+                                                <td>{{ cell }}</td>
+                                            {% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <!--<p>No data to display</p>-->
+                {% endif %}
+            </div>
+            </div>
+        </div>
+
+        <!-- Alerts Section -->
+        <div class="row">
+            <div class="col-md-6 custom-card">
+                <p><b>Alerts for P.F. Budget</b></p>
+                <div class="alert-container">
+                    <ul>
+                        {% for alert in pf_alerts %}
+                            <li class="alert"><abbr>{{ alert }}</abbr></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-6 custom-card">
+                <p><b>Alerts for Travel Budget</b></p>
+                <div class="alert-container">
+                    <ul>
+                        {% for alert in travel_alerts %}
+                            <li class="alert"><abbr>{{ alert }}</abbr></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 custom-card">
+                <p><b>Alerts for Travel Days Budget</b></p>
+                <div class="alert-container">
+                    <ul>
+                        {% for alert in travel_days_alerts %}
+                            <li class="alert"><abbr>{{ alert }}</abbr></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-6 custom-card">
+                <p><b>Alerts for DSA Budget</b></p>
+                <div class="alert-container">
+                    <ul>
+                        {% for alert in dsa_alerts %}
+                            <li class="alert"><abbr>{{ alert }}</abbr></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 custom-card">
+                <p><b>Alerts for DSA Days Budget</b></p>
+                <div class="alert-container">
+                    <ul>
+                        {% for alert in dsa_days_alerts %}
+                            <li class="alert"><abbr>{{ alert }}</abbr></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-6 custom-card">
+                <p><b>Alerts for Terminal Charges Budget</b></p>
+                <div class="alert-container">
+                    <ul>
+                        {% for alert in terminal_charges_alerts %}
+                            <li class="alert"><abbr>{{ alert }}</abbr></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 custom-card">
+                <p><b>Alerts for Flight Budget</b></p>
+                <div class="alert-container">
+                    <ul>
+                        {% for alert in flight_alerts %}
+                            <li class="alert"><abbr>{{ alert }}</abbr></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
